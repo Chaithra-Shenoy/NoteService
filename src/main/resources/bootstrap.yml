@@ -4,6 +4,10 @@ spring:
       discovery:
         service-id: Config-server
       uri: http://localhost:8999
+      profile: development
+  profiles:
+    active:
+    - development
 
 management:
   endpoints:

@@ -250,8 +250,11 @@ public class NoteServiceImpl implements INoteService {
 		precondition.checkArgument(elasticRepository.existsById(noteId), messages.get("112"));
 		Note note = elasticRepository.findById(noteId).get();
 		logger.info(note.toString());
-		if (!note.isTrashStatus()) {
+		if (!note.isTrashStatus()||note.isPinStatus()==false) {
 			note.setPinStatus(true);
+		}
+		if (!note.isTrashStatus()||note.isPinStatus()==true) {
+			note.setPinStatus(false);
 		}
 		elasticRepository.save(note);
 		repository.save(note);
@@ -271,8 +274,11 @@ public class NoteServiceImpl implements INoteService {
 		precondition.checkArgument(elasticRepository.existsById(noteId), messages.get("112"));
 		Note note = elasticRepository.findById(noteId).get();
 		logger.info(note.toString());
-		if (!note.isTrashStatus()) {
+		if (!note.isTrashStatus()||note.isArchieve()==false) {
 			note.setArchieve(true);
+		}
+		if (!note.isTrashStatus()||note.isArchieve()==true) {
+			note.setArchieve(false);
 		}
 		elasticRepository.save(note);
 		repository.save(note);
@@ -535,7 +541,8 @@ public class NoteServiceImpl implements INoteService {
 				List<MetaData> newLabelList = new ArrayList<MetaData>();
 				note.get().setData(newLabelList);
 			}
-		} else {
+		} 
+		else {
 			note.get().setDescription(note.get().getDescription() + "," + url);
 		}
 		note.get().getData().add(data);
@@ -548,13 +555,33 @@ public class NoteServiceImpl implements INoteService {
 	 * @see com.bridgeit.discoveryclientnote.noteservice.service.INoteService#sortLabelByName(java.lang.String)
 	 */
 	@Override
-	public List<Label> sortLabelByName(String userId) throws ToDoException {
+	public List<Label> sortLabelByName(String userId,boolean asc) throws ToDoException {
+		List<Label> list = null;
+		List<Label> newLabelList = new ArrayList<Label>();
+		list = labelRepository.findAll();
+		newLabelList=list;
+		System.out.println(list);
+		if(asc==true) {
+		Collections.sort(list, (list1, list2) -> {
+			return list1.getName().compareTo(list2.getName());
+		});
+		}
+		else if(asc==false) {
+			Collections.sort(newLabelList, Collections.reverseOrder());
+			return list;	
+			
+		}
+		return list;
+	}
+	
+	@Override
+	public List<Label> sortLabelById(String userId) throws ToDoException {
 		List<Label> list = null;
 		List<Label> newLabelList = new ArrayList<Label>();
 		list = labelRepository.findAll();
 		System.out.println(list);
-		Collections.sort(list, (l1, l2) -> {
-			return l1.getName().compareTo(l2.getName());
+		Collections.sort(list, (list1, list2) -> {
+			return list1.getId().compareTo(list2.getId());
 		});
 		return list;
 	}

@@ -228,6 +228,13 @@ public interface INoteService {
 	 *             name.
 	 *             </p>
 	 */
-	List<Label> sortLabelByName(String userId) throws ToDoException;
+	List<Label> sortLabelByName(String userId,boolean asc) throws ToDoException;
+
+	/**
+	 * @param userId
+	 * @return
+	 * @throws ToDoException
+	 */
+	List<Label> sortLabelById(String userId) throws ToDoException;
 
 }

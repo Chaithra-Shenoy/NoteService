@@ -28,7 +28,6 @@ import com.bridgeit.discoveryclientnote.noteservice.model.Label;
 import com.bridgeit.discoveryclientnote.noteservice.model.LabelDto;
 import com.bridgeit.discoveryclientnote.noteservice.model.Note;
 import com.bridgeit.discoveryclientnote.noteservice.model.NoteDto;
-import com.bridgeit.discoveryclientnote.noteservice.model.ResponseDto;
 import com.bridgeit.discoveryclientnote.noteservice.repository.IFeign;
 import com.bridgeit.discoveryclientnote.noteservice.service.INoteService;
 import com.bridgeit.discoveryclientnote.utilityservice.Messages;
@@ -209,7 +208,8 @@ public class NoteController {
 	 * @return ResponseEntity
 	 * @throws ToDoException
 	 *             <p>
-	 *             To make a note as Important note.
+	 *             To change the pin status of a particular note corresponding to
+	 *             the specified noteId
 	 *             </p>
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -231,7 +231,8 @@ public class NoteController {
 	 * @return ResponseEntity
 	 * @throws ToDoException
 	 *             <p>
-	 *             x To make a note Archieve
+	 *             To change the archieve status of a particular note corresponding
+	 *             to the specified noteId
 	 *             </p>
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -487,11 +488,31 @@ public class NoteController {
 	 *             name.
 	 *             </p>
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/sortlabel")
-	public ResponseEntity<List<Label>> sortLabel(@RequestHeader("token") String token, HttpServletRequest request)
+	public ResponseEntity<List<Label>> sortLabel(@RequestHeader("token") String token, HttpServletRequest request,@RequestParam boolean asc)
 			throws ToDoException {
 		String userId = (String) request.getHeader("userId");
-		List<Label> list = service.sortLabelByName(userId);
+		List<Label> list = service.sortLabelByName(userId,asc);
+		return new ResponseEntity(list, HttpStatus.OK);
+	}
+
+	/**
+	 * @param token
+	 * @param request
+	 * @return ResponseEntity
+	 * @throws ToDoException
+	 *             <p>
+	 *             This method used to display the label in sorted order by their
+	 *             id.
+	 *             </p>
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("/sortlabelById")
+	public ResponseEntity<List<Label>> sortLabelById(@RequestHeader("token") String token, HttpServletRequest request)
+			throws ToDoException {
+		String userId = (String) request.getHeader("userId");
+		List<Label> list = service.sortLabelById(userId);
 		return new ResponseEntity(list, HttpStatus.OK);
 	}
 }
