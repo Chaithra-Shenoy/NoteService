@@ -42,4 +42,6 @@ Servers
 .classpath
 .settings
 RemoteSystemsTempFiles
+.log
+.tmp
 
