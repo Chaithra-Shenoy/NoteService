@@ -6,7 +6,9 @@ package com.bridgeit.discoveryclientnote.noteservice.service;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -109,8 +111,8 @@ public class NoteServiceImpl implements INoteService {
 		noteModel.setUser(userId);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String createdDate = simpleDateFormat.format(new Date());
-		noteModel.setCreatedAt(createdDate);
 		noteModel.setUpdatedAt(createdDate);
+		noteModel.setCreatedAt(createdDate);
 		logger.debug("-Note Saved-");
 		repository.save(noteModel);
 		elasticRepository.save(noteModel);
@@ -541,4 +543,20 @@ public class NoteServiceImpl implements INoteService {
 		repository.save(note.get());
 		return note;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.bridgeit.discoveryclientnote.noteservice.service.INoteService#sortLabelByName(java.lang.String)
+	 */
+	@Override
+	public List<Label> sortLabelByName(String userId) throws ToDoException {
+		List<Label> list = null;
+		List<Label> newLabelList = new ArrayList<Label>();
+		list = labelRepository.findAll();
+		System.out.println(list);
+		Collections.sort(list, (l1, l2) -> {
+			return l1.getName().compareTo(l2.getName());
+		});
+		return list;
+	}
+
 }

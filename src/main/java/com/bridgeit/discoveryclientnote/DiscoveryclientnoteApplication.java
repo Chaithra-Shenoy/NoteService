@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableEurekaClient
 @SpringBootApplication
-@RibbonClient(name="Discoveryclientnote")
+@RibbonClient(name="NoteService")
 @EnableFeignClients
 public class DiscoveryclientnoteApplication {
 

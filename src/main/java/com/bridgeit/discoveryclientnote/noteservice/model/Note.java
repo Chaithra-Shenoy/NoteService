@@ -5,6 +5,8 @@ package com.bridgeit.discoveryclientnote.noteservice.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
@@ -26,7 +28,7 @@ public class Note {
 	private String noteId;
 	private String title;
 	private String description;
-	@ApiModelProperty(hidden = true)
+	@Column(name = "createdAt")
 	private String createdAt;
 	@ApiModelProperty(hidden = true)
 	private String updatedAt;

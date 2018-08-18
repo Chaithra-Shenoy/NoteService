@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    config:
+      discovery:
+        service-id: Config-server
+      uri: http://localhost:8999
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'     

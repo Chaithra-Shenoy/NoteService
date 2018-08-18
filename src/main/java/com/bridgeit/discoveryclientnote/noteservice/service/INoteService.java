@@ -8,11 +8,11 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
+import com.bridgeit.discoveryclientnote.noteservice.model.Label;
 import com.bridgeit.discoveryclientnote.noteservice.model.LabelDto;
 import com.bridgeit.discoveryclientnote.noteservice.model.Note;
 import com.bridgeit.discoveryclientnote.noteservice.model.NoteDto;
 import com.bridgeit.discoveryclientnote.utilityservice.exception.ToDoException;
-
 
 /**
  * 
@@ -218,5 +218,16 @@ public interface INoteService {
 	 *             </p>
 	 */
 	Optional<Note> addimage(String url, String noteId, String userId) throws IOException, ToDoException;
+
+	/**
+	 * @param userId
+	 * @return List
+	 * @throws ToDoException
+	 *             <p>
+	 *             This method used to display the label in sorted order by their
+	 *             name.
+	 *             </p>
+	 */
+	List<Label> sortLabelByName(String userId) throws ToDoException;
 
 }

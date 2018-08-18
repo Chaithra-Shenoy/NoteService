@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgeit.discoveryclientnote.noteservice.model.Label;
 import com.bridgeit.discoveryclientnote.noteservice.model.LabelDto;
 import com.bridgeit.discoveryclientnote.noteservice.model.Note;
 import com.bridgeit.discoveryclientnote.noteservice.model.NoteDto;
@@ -170,7 +171,7 @@ public class NoteController {
 	 */
 	@RequestMapping(value = "/delete/{noteID}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "delete note from database")
-	public ResponseEntity<String> deleteNotePermanently(@PathVariable("noteID") String noteId,
+	public ResponseEntity<String> deleteNotePermanently(@PathVariable String noteId,
 			@RequestHeader("token") String token, HttpServletRequest request) throws ToDoException {
 		logger.debug("---deleting Note---");
 		logger.info(REQ_ID + " To Delete Note");
@@ -453,18 +454,44 @@ public class NoteController {
 	 */
 	@GetMapping("/getuser")
 	public List<?> getUserFromUserService() {
-		logger.info("Getting user details");  
+		logger.info("Getting user details");
 		List<?> user = feign.getUser();
-		
+
 		logger.info("{}", user);
 		return user;
 	}
-	
+
+	/**
+	 * @param email
+	 * @return Optional
+	 *         <p>
+	 *         This method is used to display a user corresponding to the given
+	 *         email.
+	 *         </p>
+	 */
 	@GetMapping("/finduser/{email}")
 	public Optional<?> getUserFromEmail(@PathVariable String email) {
-		logger.info("Getting user details");  
+		logger.info("Getting user details");
 		Optional<?> user = feign.getUserByEmail(email);
 		logger.info("{}", user);
 		return user;
+	}
+
+	/**
+	 * @param token
+	 * @param request
+	 * @return ResponseEntity
+	 * @throws ToDoException
+	 *             <p>
+	 *             This method used to display the label in sorted order by their
+	 *             name.
+	 *             </p>
+	 */
+	@GetMapping("/sortlabel")
+	public ResponseEntity<List<Label>> sortLabel(@RequestHeader("token") String token, HttpServletRequest request)
+			throws ToDoException {
+		String userId = (String) request.getHeader("userId");
+		List<Label> list = service.sortLabelByName(userId);
+		return new ResponseEntity(list, HttpStatus.OK);
 	}
 }
