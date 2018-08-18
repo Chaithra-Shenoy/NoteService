@@ -2,7 +2,7 @@
 # Control the InternalResourceViewResolver:
 spring:
   application:
-    name: discoveryclientnote
+    name: NoteService
  
 
 # Discovery Server Access
